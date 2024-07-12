@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Replacer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e; /* Dark background */
+      color: #dcdcdc; /* Light text color */
+      padding: 20px;
+      width: 300px;
+      height: auto; /* Increased height to accommodate image upload */
+      border: 3px solid #007bff; /* Solid blue border */
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+      font-weight: bold;
+      color: #ffffff; /* White text color */
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(0, 145, 255, 0.764);
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: none;
+      border-radius: 5px;
+      background-color: #2e2e2e; /* Slightly lighter background for input */
+      color: #dcdcdc; /* Light text color */
+      outline: none; /* Remove focus outline */
+    }
+    .custom-file-upload {
+      font-weight: bold;
+      display: inline-block;
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #007bff; /* Blue */
+      color: white; /* White text */
+      border-radius: 5px; /* Rounded corners */
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .custom-file-upload:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+    }
+    input[type="file"] {
+      display: none; /* Hide the original file input */
+    }
+    button {
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 300px;
+      margin: 10px auto 0;
+      box-shadow: none; /* Remove any shadow */
+      outline: none; /* Remove any outline */
+      border: none;
+    }
+    .startButton {
+      background-color: #28a745; /* Green */
+    }
+    .startButton:hover {
+      background-color: #19692c; /* Darker green on hover */
+    }
+    .stopButton {
+      background-color: #dc3545; /* Red */
+    }
+    .stopButton:hover {
+      background-color: #96242f; /* Darker red on hover */
+    }
+    .uploaded-image-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .uploaded-image-label {
+      display: block;
+      margin-bottom: 10px;
+      color: #ffffff; /* White text color */
+    }
+    .uploaded-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      border: rgb(48, 159, 232);
+    }
+    .uploaded-image-label {
+      font-weight: bold;
+      font-size: 16px;
+
+
+    }
+  </style>
+</head>
+<body>
+  <h1>Text and Image Replacer</h1>
+  <input type="text" id="replaceText" placeholder="Enter text you want to replace everything with">
+  <label id="uploadLabel" for="uploadImage" class="custom-file-upload">
+    <span>Upload Image you want to replace everything with</span>
+  </label>
+  <input type="file" id="uploadImage" accept="image/*">
+  <div class="uploaded-image-container" id="uploadedImageContainer">
+    <span class="uploaded-image-label" id="uploadedImageLabel">Uploaded Image</span>
+    <img id="uploadedImagePreview" class="uploaded-image" src="" alt="Uploaded Image">
+  </div>
+  <button id="replaceButton" class="startButton">Start Replacing Text + Images</button>
+
+  <script src="popup.js"></script>
+</body>
+</html>
