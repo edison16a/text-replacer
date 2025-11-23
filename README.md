@@ -1,4 +1,4 @@
-#Text and Image Replacer Extension
+# Text and Image Replacer Extension
 
 Text and Image Replacer Extension
 
