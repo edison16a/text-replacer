@@ -1,0 +1,18 @@
+# Node tooling. The extension itself ships no dependencies, these are test-only.
+node_modules/
+npm-debug.log*
+
+# Packaged extension builds. Build the zip from source, do not commit it.
+*.zip
+dist/
+
+# macOS Finder metadata
+.DS_Store
+._*
+
+# Editor and per-user IDE state
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
