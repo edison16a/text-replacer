@@ -96,7 +96,15 @@ button {
   background-color: var(--color-stopButtonHover);
 }
 
+/*
+ * Hidden until there is something to preview. The script has always revealed
+ * this container with display: block when an image arrives, but the container
+ * was never hidden in the first place, so opening the popup with no image
+ * uploaded showed an "Uploaded Image" heading over an empty broken picture.
+ * The reveal in the script only makes sense against this.
+ */
 .uploaded-image-container {
+  display: none;
   text-align: center;
   margin-top: 20px;
 }
