@@ -8,8 +8,11 @@
  * show up as something quietly missing in the popup. This catches them before
  * the browser does.
  *
- * It also re-runs both extractors in --check mode, so a data file edited by
- * hand in a way that no longer matches the original source is caught too.
+ * It deliberately does not compare the data against the pre-refactor source.
+ * The extractors in this directory do that, and they are migration tools: they
+ * prove where the data came from, once. Running them as a gate would mean
+ * every reworded caption and every recoloured button failed validation, which
+ * is the opposite of what moving the content out of the code was for.
  *
  * Usage: node tools/validate-data.mjs
  */
@@ -137,17 +140,6 @@ if (
   pass(
     `theme: ${Object.keys(theme.palette).length} colours, ${Object.keys(theme.roles).length} roles, all used by the stylesheet, no literals left behind`,
   );
-}
-
-// --- extractors still agree with the original ------------------------------
-
-for (const tool of ["extract-theme.mjs", "extract-strings.mjs"]) {
-  try {
-    execFileSync("node", [join(ROOT, "tools", tool), "--check"], { cwd: ROOT, stdio: "pipe" });
-    pass(`${tool} --check: data matches the pinned original`);
-  } catch (error) {
-    fail(`${tool} --check failed: ${error.stderr?.toString().trim() || error.message}`);
-  }
 }
 
 // --- report ---------------------------------------------------------------

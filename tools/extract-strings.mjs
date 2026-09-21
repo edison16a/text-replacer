@@ -13,8 +13,12 @@
  * and fails if it meets a string it has no key for. Nothing is typed twice
  * and nothing can be quietly dropped.
  *
+ * This is a migration tool, not a build step. It ran once to produce
+ * data/strings.json and is kept for provenance. That file is the source of
+ * truth now, and editing it by hand is the supported way to reword the UI.
+ *
  * Usage: node tools/extract-strings.mjs [--check]
- *   --check exits non-zero if data/strings.json is stale instead of rewriting.
+ *   --check reports whether the file still matches the original copy.
  */
 
 import { execFileSync } from "node:child_process";

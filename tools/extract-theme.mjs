@@ -16,8 +16,13 @@
  *   roles   - what each UI part uses, pointing at a palette entry
  * That way changing "the blue" is one edit, not six.
  *
+ * This is a migration tool, not a build step. It ran once to produce
+ * data/theme.json and is kept so the provenance of those values can be
+ * re-checked. data/theme.json is the source of truth now, and editing it by
+ * hand is the supported way to recolour the popup.
+ *
  * Usage: node tools/extract-theme.mjs [--check]
- *   --check exits non-zero if data/theme.json is stale instead of rewriting it.
+ *   --check reports whether the file still matches the original colours.
  */
 
 import { execFileSync } from "node:child_process";
