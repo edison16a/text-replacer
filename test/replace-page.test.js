@@ -115,3 +115,17 @@ test("still replaces every tag the extension shipped with", () => {
   }
   assert.deepEqual(selectors.image, ["img"]);
 });
+
+test("survives being serialised the way Chrome injects it", () => {
+  // chrome.scripting.executeScript stringifies the function and rebuilds it
+  // inside the page, so it must close over nothing. A helper call or an
+  // imported constant would throw a ReferenceError in the page and nowhere
+  // else, which is the kind of break that ships.
+  const rebuilt = new Function(`return (${replacePage.toString()})`)();
+  const doc = page(`<p>original</p><img src="a.png">`);
+
+  rebuilt(TEXT, IMAGES, "BOO", "u.png", doc);
+
+  assert.equal(doc.querySelector("p").textContent, "BOO");
+  assert.equal(doc.querySelector("img").getAttribute("src"), "u.png");
+});
