@@ -19,3 +19,10 @@ export const STOP_REPLACING = "stopReplacing";
  */
 export const STARTED_REPLY = "Text and image replacement started.";
 export const STOPPED_REPLY = "Text and image replacement stopped.";
+
+/**
+ * Answer to an action we do not recognise. Exists so that every message gets a
+ * reply: a sender that waits for one and never gets it sees the channel close,
+ * which is harder to debug than being told the action was not understood.
+ */
+export const UNKNOWN_ACTION_REPLY = "Unknown action.";

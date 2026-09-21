@@ -22,6 +22,7 @@ import {
   STOP_REPLACING,
   STARTED_REPLY,
   STOPPED_REPLY,
+  UNKNOWN_ACTION_REPLY,
 } from "../shared/messages.js";
 import { createReplacementLoop } from "./replacement-loop.js";
 
@@ -54,12 +55,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {
     const replacer = await getLoop();
 
-    if (message.action === START_REPLACING && !replacer.isReplacing) {
+    // Every branch replies. The old handler only replied when the action
+    // changed something, so sending Start while already running, or Stop while
+    // already stopped, left the popup's callback waiting on a message that
+    // never came and then throwing on response.message. The loop's own start
+    // and stop are no-ops when there is nothing to do, so the guard that used
+    // to sit here is redundant as well as harmful.
+    if (message.action === START_REPLACING) {
       replacer.start(message.text, message.imageUrl);
       sendResponse({ message: STARTED_REPLY });
-    } else if (message.action === STOP_REPLACING && replacer.isReplacing) {
+    } else if (message.action === STOP_REPLACING) {
       replacer.stop();
       sendResponse({ message: STOPPED_REPLY });
+    } else {
+      sendResponse({ message: UNKNOWN_ACTION_REPLY });
     }
   })();
 
