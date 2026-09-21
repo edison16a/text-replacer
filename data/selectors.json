@@ -1,0 +1,25 @@
+{
+  "_comment": "Which elements the replacer overwrites. Edit this file to change the targets, no code change needed. The text list is joined with ', ' into one querySelectorAll call, so every entry must be a valid standalone CSS selector.",
+  "text": [
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "p",
+    "li",
+    "td",
+    "th",
+    "strong",
+    "em",
+    "b",
+    "i",
+    "u",
+    "blockquote",
+    "q"
+  ],
+  "image": [
+    "img"
+  ]
+}

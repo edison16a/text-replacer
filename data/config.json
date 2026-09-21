@@ -1,0 +1,4 @@
+{
+  "_comment": "Runtime tuning values. Kept out of source so the cadence can be changed without editing the background worker.",
+  "replacementIntervalMs": 1000
+}
