@@ -20,7 +20,8 @@
  * @param {string} textSelector Comma-separated selector for elements to retext.
  * @param {string} imageSelector Selector for images to repoint.
  * @param {string} replacementText Text every matched element is set to.
- * @param {string} imageUrl URL or data URL every matched image is set to.
+ * @param {string} imageUrl URL or data URL every matched image is set to. An
+ *   empty string means no image was uploaded and images are left alone.
  * @param {Document} [doc] The document to act on. Defaults to the page's own,
  *   which is what happens when injected; tests pass one in.
  */
@@ -28,7 +29,13 @@ export function replacePage(textSelector, imageSelector, replacementText, imageU
   for (const element of doc.querySelectorAll(textSelector)) {
     element.textContent = replacementText;
   }
-  for (const image of doc.querySelectorAll(imageSelector)) {
-    image.src = imageUrl;
+  // Only touch images when there is something to point them at. Setting src
+  // to "" does not clear an image, it resolves to the page's own URL, so
+  // replacing text alone used to break every picture on every page you had
+  // open. Uploading an image is optional, so this has to be too.
+  if (imageUrl) {
+    for (const image of doc.querySelectorAll(imageSelector)) {
+      image.src = imageUrl;
+    }
   }
 }
