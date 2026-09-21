@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+  Popup markup. Structure only.
+
+  No copy and no colours live here. Text is filled in from data/strings.json
+  via the data-string attributes below, and colours arrive as custom properties
+  from data/theme.json. Both are applied by popup.js on load, so rewording or
+  recolouring the UI is a data edit.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h1 data-string="appTitle"></h1>
+
+  <input type="text" id="replaceText" data-string-placeholder="replacementTextPlaceholder">
+
+  <label id="uploadLabel" for="uploadImage" class="custom-file-upload">
+    <span data-string="uploadPrompt"></span>
+  </label>
+  <input type="file" id="uploadImage" accept="image/*">
+
+  <div class="uploaded-image-container" id="uploadedImageContainer">
+    <span class="uploaded-image-label" id="uploadedImageLabel" data-string="imagePreviewLabel"></span>
+    <img id="uploadedImagePreview" class="uploaded-image" src="" data-string-alt="imagePreviewLabel">
+  </div>
+
+  <button id="replaceButton" class="startButton" data-string="startButton"></button>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
