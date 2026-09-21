@@ -17,14 +17,8 @@
 import { loadConfig, loadSelectors } from "../shared/data.js";
 import { buildSelector } from "../shared/selectors.js";
 import { replacePage } from "../content/replace-page.js";
-import {
-  START_REPLACING,
-  STOP_REPLACING,
-  STARTED_REPLY,
-  STOPPED_REPLY,
-  UNKNOWN_ACTION_REPLY,
-} from "../shared/messages.js";
 import { createReplacementLoop } from "./replacement-loop.js";
+import { routeMessage } from "./route-message.js";
 
 /** Memoised so the data files are read once per worker lifetime, not per message. */
 let loop = null;
@@ -53,25 +47,9 @@ async function getLoop() {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {
-    const replacer = await getLoop();
-
-    // Every branch replies. The old handler only replied when the action
-    // changed something, so sending Start while already running, or Stop while
-    // already stopped, left the popup's callback waiting on a message that
-    // never came and then throwing on response.message. The loop's own start
-    // and stop are no-ops when there is nothing to do, so the guard that used
-    // to sit here is redundant as well as harmful.
-    if (message.action === START_REPLACING) {
-      replacer.start(message.text, message.imageUrl);
-      sendResponse({ message: STARTED_REPLY });
-    } else if (message.action === STOP_REPLACING) {
-      replacer.stop();
-      sendResponse({ message: STOPPED_REPLY });
-    } else {
-      sendResponse({ message: UNKNOWN_ACTION_REPLY });
-    }
+    sendResponse(routeMessage(message, await getLoop()));
   })();
 
-  // Keep the message channel open: every reply above happens after an await.
+  // Keep the message channel open: the reply happens after an await.
   return true;
 });
