@@ -1,0 +1,130 @@
+/*
+ * Popup styling.
+ *
+ * Every colour here is a var(--color-*) custom property. The values are not in
+ * this file: they come from data/theme.json and are set on :root by theme.js
+ * when the popup loads, so recolouring the UI never means editing CSS. The
+ * role names match the `roles` block in that file one for one.
+ *
+ * Layout, spacing and typography are unchanged from the inline stylesheet this
+ * replaces.
+ */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  padding: 20px;
+  width: 300px;
+  height: auto;
+  border: 3px solid var(--color-surfaceBorder);
+  border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
+  font-weight: bold;
+  color: var(--color-heading);
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px var(--color-headingGlow);
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--color-inputSurface);
+  color: var(--color-inputText);
+  outline: none;
+}
+
+/* The real file input is hidden and driven by the label above it. */
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  font-weight: bold;
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: var(--color-uploadButton);
+  color: var(--color-uploadButtonText);
+  border-radius: 5px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-file-upload:hover {
+  background-color: var(--color-uploadButtonHover);
+}
+
+button {
+  color: var(--color-buttonText);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 300px;
+  margin: 10px auto 0;
+  box-shadow: none;
+  outline: none;
+  border: none;
+}
+
+.startButton {
+  background-color: var(--color-startButton);
+}
+
+.startButton:hover {
+  background-color: var(--color-startButtonHover);
+}
+
+.stopButton {
+  background-color: var(--color-stopButton);
+}
+
+.stopButton:hover {
+  background-color: var(--color-stopButtonHover);
+}
+
+.uploaded-image-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/*
+ * The original had two separate .uploaded-image-label rules, one near the top
+ * and one at the bottom of the file, with no overlapping properties. Merged
+ * into one. Nothing renders differently; there is just one place to look now.
+ */
+.uploaded-image-label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--color-imageLabel);
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.uploaded-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  /*
+   * Carried over as-is, and as-is it does nothing: `border` is shorthand and
+   * needs a style, so a bare colour is dropped by the parser and the preview
+   * has no border today. Left alone on purpose. Adding `1px solid` would put a
+   * visible border on screen that has never been there, which is a design
+   * decision, not a refactor.
+   */
+  border: var(--color-imagePreviewBorder);
+}
