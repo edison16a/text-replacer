@@ -8,6 +8,11 @@
  * show up as something quietly missing in the popup. This catches them before
  * the browser does.
  *
+ * It also checks the two files that both describe the extension, manifest.json
+ * and package.json, still agree. Chrome needs the manifest literal, so there
+ * is no way to have one source of truth for the version; the next best thing
+ * is failing when they drift.
+ *
  * It deliberately does not compare the data against the pre-refactor source.
  * The extractors in this directory do that, and they are migration tools: they
  * prove where the data came from, once. Running them as a gate would mean
@@ -151,6 +156,26 @@ if (
   pass(
     `theme: ${Object.keys(theme.palette).length} colours, ${Object.keys(theme.roles).length} roles, all used by the stylesheet, no literals left behind`,
   );
+}
+
+// --- the two files that describe the extension ----------------------------
+
+const manifest = readJson("manifest.json");
+const packageJson = readJson("package.json");
+
+/**
+ * Chrome accepts a two-part version, npm insists on three. Compare like for like.
+ *
+ * @param {string} version
+ */
+const asSemver = (version) => `${version}.0.0.0`.split(".").slice(0, 3).join(".");
+
+if (asSemver(manifest.version) !== asSemver(packageJson.version)) {
+  fail(`manifest version ${manifest.version} but package version ${packageJson.version}`);
+} else if (manifest.description !== packageJson.description) {
+  fail("manifest and package descriptions have drifted apart");
+} else {
+  pass(`manifest and package.json agree: version ${manifest.version}`);
 }
 
 // --- report ---------------------------------------------------------------

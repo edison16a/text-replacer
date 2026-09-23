@@ -2,7 +2,7 @@
   "name": "text-replacer-extension",
   "version": "8.0.0",
   "private": true,
-  "description": "Chrome extension that replaces webpage text and images with your own",
+  "description": "An extension that replaces all text and images with what you want!",
   "type": "module",
   "engines": {
     "node": ">=22"
