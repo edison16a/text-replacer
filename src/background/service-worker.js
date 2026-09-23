@@ -19,6 +19,7 @@ import { buildSelector } from "../shared/selectors.js";
 import { replacePage } from "../content/replace-page.js";
 import { once } from "../shared/once.js";
 import { createReplacementLoop } from "./replacement-loop.js";
+import { FAILED_REPLY } from "../shared/messages.js";
 import { routeMessage } from "./route-message.js";
 
 /**
@@ -60,7 +61,16 @@ const getLoop = once(async () => {
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
-    sendResponse(routeMessage(message, await getLoop()));
+    try {
+      sendResponse(routeMessage(message, await getLoop()));
+    } catch (error) {
+      // Getting the loop means reading the packaged data files, and that can
+      // fail. It used to fail by rejecting inside this listener, so
+      // sendResponse was never called: the popup was left waiting on a
+      // channel that later closed, and its handler then read .message off
+      // undefined. Answer instead, and say what happened.
+      sendResponse({ message: `${FAILED_REPLY} ${error}` });
+    }
   })();
 
   // Keep the message channel open: the reply happens after an await.

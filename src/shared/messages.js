@@ -26,3 +26,10 @@ export const STOPPED_REPLY = "Text and image replacement stopped.";
  * which is harder to debug than being told the action was not understood.
  */
 export const UNKNOWN_ACTION_REPLY = "Unknown action.";
+
+/**
+ * Answer when the worker could not do the work at all, because its data files
+ * would not load. Still an answer: the sender is waiting on one, and a reply
+ * saying what went wrong beats a channel that closes in silence.
+ */
+export const FAILED_REPLY = "Text and image replacement failed to start:";

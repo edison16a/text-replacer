@@ -25,6 +25,13 @@ import {
  * @returns {{message: string}} The reply to send back.
  */
 export function routeMessage(message, replacer) {
+  // Anything that is not an object has no action, and reaching for .action on
+  // it would throw out of the listener and leave the sender unanswered, which
+  // is the one thing this function exists to prevent.
+  if (!message || typeof message !== "object") {
+    return { message: UNKNOWN_ACTION_REPLY };
+  }
+
   if (message.action === START_REPLACING) {
     replacer.start(message.text, message.imageUrl);
     return { message: STARTED_REPLY };
