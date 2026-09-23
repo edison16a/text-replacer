@@ -74,3 +74,14 @@ test("an action nobody recognises still gets an answer", () => {
   assert.deepEqual(replacer.calls, []);
   assert.deepEqual(reply, { message: UNKNOWN_ACTION_REPLY });
 });
+
+test("a message that is not an object still gets an answer", () => {
+  // Regression: reaching for .action on a string or on null threw out of the
+  // listener, so the sender was left waiting on a channel nobody answered.
+  const replacer = fakeReplacer();
+
+  for (const message of ["hello", null, undefined, 42, []]) {
+    assert.deepEqual(routeMessage(message, replacer), { message: UNKNOWN_ACTION_REPLY });
+  }
+  assert.deepEqual(replacer.calls, []);
+});
