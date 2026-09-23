@@ -57,12 +57,19 @@ const HTML_PATTERNS = [
   /<button[^>]*>([^<]+)<\/button>/g,
 ];
 
+/** @param {string} file Path inside the pinned revision. */
 function read(file) {
   return execFileSync("git", ["show", `${SOURCE_REV}:${file}`], { cwd: ROOT, encoding: "utf8" });
 }
 
-/** Every quoted literal on a line that assigns to textContent. */
+/**
+ * Every quoted literal on a line that assigns to textContent.
+ *
+ * @param {string} js
+ * @returns {string[]}
+ */
 function copyFromScript(js) {
+  /** @type {string[]} */
   const found = [];
   for (const line of js.split("\n")) {
     if (!line.includes(".textContent")) continue;
@@ -73,7 +80,12 @@ function copyFromScript(js) {
   return found;
 }
 
+/**
+ * @param {string} html
+ * @returns {string[]}
+ */
 function copyFromMarkup(html) {
+  /** @type {string[]} */
   const found = [];
   for (const pattern of HTML_PATTERNS) {
     for (const match of html.matchAll(pattern)) found.push(match[1].trim());
@@ -84,6 +96,7 @@ function copyFromMarkup(html) {
 function build() {
   const found = [...copyFromMarkup(read("popup.html")), ...copyFromScript(read("popup.js"))];
 
+  /** @type {Record<string, string>} */
   const strings = {};
   for (const text of found) {
     const key = KEYS.get(text);
@@ -97,6 +110,7 @@ function build() {
   const missing = [...KEYS.values()].filter((key) => !(key in strings));
   if (missing.length) throw new Error(`keys declared but never found: ${missing.join(", ")}`);
 
+  /** @type {Record<string, string>} */
   const sorted = {};
   for (const key of Object.keys(strings).sort()) sorted[key] = strings[key];
 

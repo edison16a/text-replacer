@@ -23,17 +23,29 @@ import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
+/** @type {string[]} */
 const problems = [];
+/** @type {string[]} */
 const checks = [];
 
+/** @param {string} message */
 const fail = (message) => problems.push(message);
+/** @param {string} message */
 const pass = (message) => checks.push(message);
 
+/** @param {string} relative */
 const read = (relative) => readFileSync(join(ROOT, relative), "utf8");
+/** @param {string} relative */
 const readJson = (relative) => JSON.parse(read(relative));
 
-/** Every file under src/, so usage checks cannot miss a module. */
+/**
+ * Every file under src/, so usage checks cannot miss a module.
+ *
+ * @param {string} [directory]
+ * @returns {string[]}
+ */
 function sourceFiles(directory = "src") {
+  /** @type {string[]} */
   const entries = [];
   for (const name of readdirSync(join(ROOT, directory))) {
     const relative = `${directory}/${name}`;
@@ -43,8 +55,8 @@ function sourceFiles(directory = "src") {
   return entries;
 }
 
-const SOURCE = sourceFiles().map((path) => [path, read(path)]);
-const ALL_SOURCE = SOURCE.map(([, text]) => text).join("\n");
+// Every module concatenated, for the "is this key actually used" checks.
+const ALL_SOURCE = sourceFiles().map(read).join("\n");
 
 // --- config ---------------------------------------------------------------
 

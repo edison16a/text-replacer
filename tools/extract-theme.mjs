@@ -125,11 +125,16 @@ function readOriginal() {
  * with flat rules and no at-rules or nesting. A dependency would be more code
  * to audit than the 20 lines it replaces.
  */
+/**
+ * @param {string} html The pinned original popup.
+ * @returns {Array<{selector: string, property: string, value: string}>}
+ */
 function parseDeclarations(html) {
   const style = html.match(/<style>([\s\S]*?)<\/style>/);
   if (!style) throw new Error("no <style> block found in the original popup");
 
   const css = style[1].replace(/\/\*[\s\S]*?\*\//g, "");
+  /** @type {Array<{selector: string, property: string, value: string}>} */
   const declarations = [];
 
   for (const block of css.split("}")) {
@@ -151,6 +156,7 @@ function parseDeclarations(html) {
 
 function build() {
   const declarations = parseDeclarations(readOriginal());
+  /** @type {Record<string, string>} */
   const roles = {};
   const usedPalette = new Set();
   const seen = new Set();
@@ -186,9 +192,16 @@ function build() {
     throw new Error(`palette entries nothing uses: ${unusedPalette.join(", ")}`);
   }
 
+  /** @type {Record<string, string>} */
   const palette = {};
-  for (const name of [...usedPalette].sort()) palette[name] = PALETTE_VALUES.get(name);
+  for (const name of [...usedPalette].sort()) {
+    // Non-null by construction: usedPalette only ever gains names that came
+    // out of PALETTE_NAMES, and the unusedPalette check above proves the two
+    // maps cover each other.
+    palette[name] = /** @type {string} */ (PALETTE_VALUES.get(name));
+  }
 
+  /** @type {Record<string, string>} */
   const sortedRoles = {};
   for (const role of Object.keys(roles).sort()) sortedRoles[role] = roles[role];
 
