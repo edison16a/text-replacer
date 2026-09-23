@@ -35,7 +35,10 @@ export function replacePage(textSelector, imageSelector, replacementText, imageU
   // open. Uploading an image is optional, so this has to be too.
   if (imageUrl) {
     for (const image of doc.querySelectorAll(imageSelector)) {
-      image.src = imageUrl;
+      // The selector decides what comes back, so this asserts rather than
+      // checks. A JSDoc cast is a comment, which matters here: this function is
+      // serialised with toString() and rebuilt inside the page.
+      /** @type {HTMLImageElement} */ (image).src = imageUrl;
     }
   }
 }

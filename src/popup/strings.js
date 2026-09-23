@@ -7,11 +7,34 @@
  * a silently empty button is much harder to notice than a stack trace.
  */
 
-/** Attribute to the property it fills. */
+/**
+ * One kind of slot: the attribute that marks it, and how to fill it.
+ *
+ * @typedef {object} Slot
+ * @property {string} attribute The marker attribute, naming a key in the data.
+ * @property {(element: Element, value: string) => void} assign Puts the copy in.
+ */
+
+/** @type {Slot[]} */
 const SLOTS = [
-  ["data-string", (element, value) => (element.textContent = value)],
-  ["data-string-placeholder", (element, value) => (element.placeholder = value)],
-  ["data-string-alt", (element, value) => (element.alt = value)],
+  {
+    attribute: "data-string",
+    assign: (element, value) => {
+      element.textContent = value;
+    },
+  },
+  {
+    attribute: "data-string-placeholder",
+    assign: (element, value) => {
+      /** @type {HTMLInputElement} */ (element).placeholder = value;
+    },
+  },
+  {
+    attribute: "data-string-alt",
+    assign: (element, value) => {
+      /** @type {HTMLImageElement} */ (element).alt = value;
+    },
+  },
 ];
 
 /**
@@ -19,9 +42,10 @@ const SLOTS = [
  * @param {Record<string, string>} strings Contents of data/strings.json.
  */
 export function applyStrings(root, strings) {
-  for (const [attribute, assign] of SLOTS) {
+  for (const { attribute, assign } of SLOTS) {
     for (const element of root.querySelectorAll(`[${attribute}]`)) {
-      const key = element.getAttribute(attribute);
+      // Non-null by construction: we selected these elements on the attribute.
+      const key = /** @type {string} */ (element.getAttribute(attribute));
       const value = strings[key];
       if (value === undefined) {
         throw new Error(`${attribute}="${key}" has no entry in data/strings.json`);

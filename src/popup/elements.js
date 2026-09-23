@@ -23,8 +23,22 @@ export const HANDLES = {
 };
 
 /**
+ * What the popup gets back. The concrete element types are asserted in one
+ * place here, against the markup listed above, so nothing downstream has to
+ * cast an Element before reading .value or .src.
+ *
+ * @typedef {object} PopupElements
+ * @property {HTMLButtonElement} replaceButton The start/stop button.
+ * @property {HTMLInputElement} replaceText What everything becomes.
+ * @property {HTMLInputElement} uploadImage The hidden file input.
+ * @property {HTMLElement} uploadPrompt The caption inside the upload label.
+ * @property {HTMLElement} imageContainer Wrapper shown once an image exists.
+ * @property {HTMLImageElement} imagePreview The uploaded image itself.
+ */
+
+/**
  * @param {ParentNode} root The popup document.
- * @returns {Record<keyof typeof HANDLES, Element>} Every element, by name.
+ * @returns {PopupElements} Every element, by name.
  */
 export function findElements(root) {
   const elements = /** @type {Record<string, Element>} */ ({});
@@ -37,5 +51,7 @@ export function findElements(root) {
     elements[name] = element;
   }
 
-  return elements;
+  // Asserted, not checked. The markup is ours and ships in the same commit as
+  // this list, and a test boots the real popup.html through it.
+  return /** @type {PopupElements} */ (/** @type {unknown} */ (elements));
 }

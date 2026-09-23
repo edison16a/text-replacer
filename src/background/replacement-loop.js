@@ -15,9 +15,12 @@
 /**
  * @typedef {object} ReplacementLoopOptions
  * @property {number} intervalMs How often to rewrite every open tab.
- * @property {() => Promise<Array<{id: number}>>} listTabs Yields the tabs to act on.
- * @property {(tabId: number, text: string, imageUrl: string) => Promise<unknown>} applyToTab
- *   Rewrites one tab. May reject; the loop treats that as normal.
+ * @property {() => Promise<Array<{id?: number}>>} listTabs Yields the tabs to act on.
+ *   A tab's id is optional because Chrome's own is: devtools and some internal
+ *   views come back without one.
+ * @property {(tabId: number | undefined, text: string, imageUrl: string) => Promise<unknown>} applyToTab
+ *   Rewrites one tab. May reject, or throw on an id that is not a real tab;
+ *   the loop treats either as normal.
  * @property {typeof setInterval} [schedule]
  * @property {typeof clearInterval} [cancel]
  */
@@ -32,6 +35,7 @@ export function createReplacementLoop({
   schedule = setInterval,
   cancel = clearInterval,
 }) {
+  /** @type {ReturnType<typeof setInterval> | null} */
   let intervalId = null;
   let replacementText = "";
   let imageUrl = "";
@@ -68,6 +72,10 @@ export function createReplacementLoop({
     /**
      * Starts rewriting. A second call while already running is ignored, which
      * is what stops the timer from being replaced and leaked.
+     */
+    /**
+     * @param {string} text
+     * @param {string} url
      */
     start(text, url) {
       if (intervalId !== null) return;

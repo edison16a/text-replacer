@@ -9,26 +9,49 @@
  * what lets the popup come back up showing the text you last typed.
  */
 
-const KEYS = {
-  replacementText: "replacementText",
-  isReplacing: "isReplacing",
-  uploadedImageUrl: "uploadedImageUrl",
-};
+/**
+ * What the popup remembers between openings.
+ *
+ * Every field is optional because nothing is written until you use the popup,
+ * so a first run reads an empty object.
+ *
+ * @typedef {object} PopupState
+ * @property {string} [replacementText] What everything becomes.
+ * @property {boolean} [isReplacing] Whether Start was pressed.
+ * @property {string} [uploadedImageUrl] The uploaded image, as a data URL.
+ */
 
-/** @returns {Promise<{replacementText?: string, isReplacing?: boolean, uploadedImageUrl?: string}>} */
+/**
+ * The storage keys, as literal types rather than plain strings, so a key that
+ * is not part of PopupState is a compile error instead of a read that always
+ * returns nothing.
+ *
+ * @type {ReadonlyArray<keyof PopupState>}
+ */
+const KEYS = ["replacementText", "isReplacing", "uploadedImageUrl"];
+
+/** @returns {Promise<PopupState>} */
 export function readState() {
-  return chrome.storage.local.get(Object.values(KEYS));
+  return chrome.storage.local.get([...KEYS]);
 }
 
-/** Records what we are replacing with and whether we are running. */
+/**
+ * Records what we are replacing with and whether we are running.
+ *
+ * @param {string} replacementText
+ * @param {boolean} isReplacing
+ */
 export function saveReplacementState(replacementText, isReplacing) {
-  return chrome.storage.local.set({
-    [KEYS.replacementText]: replacementText,
-    [KEYS.isReplacing]: isReplacing,
-  });
+  return chrome.storage.local.set(
+    /** @type {PopupState} */ ({ replacementText, isReplacing }),
+  );
 }
 
-/** Records the uploaded image, held as a data URL. */
+/**
+ * Records the uploaded image, held as a data URL.
+ *
+ * @param {string} uploadedImageUrl
+ */
 export function saveImage(uploadedImageUrl) {
-  return chrome.storage.local.set({ [KEYS.uploadedImageUrl]: uploadedImageUrl });
+  return chrome.storage.local.set(/** @type {PopupState} */ ({ uploadedImageUrl }));
 }

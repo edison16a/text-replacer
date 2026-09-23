@@ -13,6 +13,7 @@
  * @returns {Record<string, string>} Custom property names mapped to colours.
  */
 export function themeToCustomProperties(theme) {
+  /** @type {Record<string, string>} */
   const properties = {};
   for (const [role, paletteName] of Object.entries(theme.roles ?? {})) {
     const colour = theme.palette?.[paletteName];

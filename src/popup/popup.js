@@ -74,23 +74,31 @@ async function main() {
       // looking at is reloaded to bring the real content back.
       chrome.tabs
         .query({ active: true, currentWindow: true })
-        .then(([tab]) => chrome.tabs.reload(tab.id));
+        // A popup belongs to an active tab and an active tab has an id. The
+        // published types do not say that reload also accepts no id at all,
+        // in which case it reloads the selected tab, so either way this is
+        // the tab in front of you.
+        .then(([tab]) => chrome.tabs.reload(/** @type {number} */ (tab.id)));
     }
 
     saveReplacementState(replaceText, isReplacing);
     setReplaceButtonState(replaceButton, isReplacing, strings);
   });
 
-  uploadImageElement.addEventListener("change", (event) => {
-    const file = event.target.files[0];
+  uploadImageElement.addEventListener("change", () => {
+    // Read off the typed handle rather than the event target, which the DOM
+    // types only promise is an EventTarget.
+    const file = uploadImageElement.files?.[0];
     if (!file) return;
 
     // Read as a data URL rather than an object URL: the result is stored and
     // injected into other pages, and a blob: URL is scoped to this popup and
     // dies when it closes.
     const reader = new FileReader();
-    reader.onload = (loaded) => {
-      uploadedImageUrl = loaded.target.result;
+    reader.onload = () => {
+      // readAsDataURL always produces a string. The union in the DOM types
+      // covers readAsArrayBuffer, which we do not use.
+      uploadedImageUrl = /** @type {string} */ (reader.result);
       saveImage(uploadedImageUrl);
       setUploadPrompt(uploadPromptElement, true, strings);
       showImagePreview(uploadedImageContainer, uploadedImagePreview, uploadedImageUrl);

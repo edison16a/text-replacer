@@ -20,7 +20,12 @@ import { replacePage } from "../content/replace-page.js";
 import { createReplacementLoop } from "./replacement-loop.js";
 import { routeMessage } from "./route-message.js";
 
-/** Memoised so the data files are read once per worker lifetime, not per message. */
+/**
+ * Memoised so the data files are read once per worker lifetime, not per
+ * message.
+ *
+ * @type {ReturnType<typeof createReplacementLoop> | null}
+ */
 let loop = null;
 
 async function getLoop() {
@@ -33,19 +38,26 @@ async function getLoop() {
   loop = createReplacementLoop({
     intervalMs: config.replacementIntervalMs,
     listTabs: () => chrome.tabs.query({}),
-    applyToTab: (tabId, text, imageUrl) =>
-      chrome.scripting.executeScript({
+    applyToTab: (tabId, text, imageUrl) => {
+      // Chrome returns some tabs with no id, such as devtools windows. There
+      // is nothing to inject into. Passing the missing id through would make
+      // executeScript throw and the loop swallow it, which is the same
+      // outcome by a longer route.
+      if (tabId === undefined) return Promise.resolve();
+
+      return chrome.scripting.executeScript({
         target: { tabId },
         // A function plus arguments, never a source string. The values cross
         // as data, so nothing the user types can be parsed as code.
         func: replacePage,
         args: [textSelector, imageSelector, text, imageUrl],
-      }),
+      });
+    },
   });
   return loop;
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
     sendResponse(routeMessage(message, await getLoop()));
   })();
