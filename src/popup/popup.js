@@ -56,25 +56,25 @@ async function main() {
   replaceButton.addEventListener("click", () => {
     const replaceText = replaceTextElement.value;
 
+    // These are the promise forms of the same calls, and the ordering is
+    // unchanged: the promise is created here and now, the reply is handled
+    // whenever it lands, and everything below runs straight away either way.
     if (!isReplacing) {
-      chrome.runtime.sendMessage(
-        { action: START_REPLACING, text: replaceText, imageUrl: uploadedImageUrl },
-        (response) => {
-          console.log(response.message);
-        },
-      );
+      chrome.runtime
+        .sendMessage({ action: START_REPLACING, text: replaceText, imageUrl: uploadedImageUrl })
+        .then((response) => console.log(response.message));
       isReplacing = true;
     } else {
-      chrome.runtime.sendMessage({ action: STOP_REPLACING }, (response) => {
-        console.log(response.message);
-      });
+      chrome.runtime
+        .sendMessage({ action: STOP_REPLACING })
+        .then((response) => console.log(response.message));
       isReplacing = false;
 
       // Stopping leaves the rewritten page on screen, so the tab you are
       // looking at is reloaded to bring the real content back.
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        chrome.tabs.reload(tabs[0].id);
-      });
+      chrome.tabs
+        .query({ active: true, currentWindow: true })
+        .then(([tab]) => chrome.tabs.reload(tab.id));
     }
 
     saveReplacementState(replaceText, isReplacing);

@@ -23,9 +23,9 @@ const sentMessages = [];
 globalThis.chrome = {
   runtime: {
     getURL: (path) => path,
-    sendMessage: (message, callback) => {
+    sendMessage: async (message) => {
       sentMessages.push(message);
-      callback?.({ message: "stubbed reply" });
+      return { message: "stubbed reply" };
     },
   },
   storage: { local: { get: async () => ({}), set: async () => {} } },
