@@ -1,0 +1,42 @@
+# Runs on every push and pull request, so the checks that already exist as npm
+# scripts are actually enforced rather than relied on people remembering.
+#
+# One job, not four. These take seconds, and splitting them would spend more
+# time starting runners than checking anything.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Matches the engines field in package.json.
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Validate data files
+        run: npm run validate
+
+      - name: Test
+        run: npm test
+
+      # Builds the store zip and fails if a path the manifest needs is not in
+      # it. Cheap, and it means a broken package is caught on the branch.
+      - name: Package
+        run: npm run package
