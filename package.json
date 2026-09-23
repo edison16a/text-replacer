@@ -4,6 +4,9 @@
   "private": true,
   "description": "Chrome extension that replaces webpage text and images with your own",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "node --test test/*.test.js",
     "validate": "node tools/validate-data.mjs",
