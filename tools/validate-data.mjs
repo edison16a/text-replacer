@@ -83,7 +83,7 @@ for (const group of ["text", "image"]) {
 
 // --- strings --------------------------------------------------------------
 
-const { _comment: _stringsComment, ...strings } = readJson("data/strings.json");
+const strings = readJson("data/strings.json");
 
 const empty = Object.entries(strings).filter(([, value]) => typeof value !== "string" || !value.trim());
 if (empty.length) fail(`strings with no text: ${empty.map(([key]) => key).join(", ")}`);
