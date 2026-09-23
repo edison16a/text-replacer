@@ -17,7 +17,6 @@
  * Usage: node tools/validate-data.mjs
  */
 
-import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
