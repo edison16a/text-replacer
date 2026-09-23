@@ -107,6 +107,8 @@ No lists, captions, colours or timings are written into the source. They live in
 | `data/strings.json` | Every word in the popup |
 | `data/theme.json` | Every colour in the popup |
 
+`data/README.md` describes each file in full.
+
 ### Changing It Without Writing Code
 
 **Replace a new kind of element.** Add the tag to the `text` array in
@@ -142,10 +144,16 @@ Load it unpacked:
 Work on it:
 
 ```sh
-npm install        # jsdom, for the tests. The extension itself has no dependencies.
-npm test           # the test suite
-npm run validate   # check the data files
+npm install         # dev tools only. The extension itself has no dependencies.
+npm test            # the test suite
+npm run lint        # ESLint
+npm run typecheck   # tsc in checkJs mode, using chrome's own API types
+npm run validate    # check the data files against the code that reads them
+npm run package     # build the store zip into dist/
 ```
 
-The extension ships exactly what is in the repo. There is no build step and
-nothing is compiled or bundled.
+CI runs all of it on every push and pull request.
+
+Nothing is compiled. The extension ships the source in this repo exactly as
+written, and `npm run package` just zips it. The type checking is checking
+only: the JSDoc comments are the types, there is no TypeScript to build.
