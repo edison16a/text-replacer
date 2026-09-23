@@ -5,6 +5,8 @@ Type what you want everything to say, upload the picture you want everywhere,
 and press Start. Personalize a page, swap out content for a laugh, or mock up
 how your own words look on a live site.
 
+https://chromewebstore.google.com/detail/text-image-replacer-exten/glamceigjodgbnfondkfloeoiikmlfno?hl=en
+
 ## Features
 
 **Replace text.** Every heading, paragraph, list item and table cell on the page
