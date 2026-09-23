@@ -54,6 +54,12 @@ export default [
       sourceType: "module",
       globals: { ...globals.node },
     },
-    rules: shared,
+    rules: {
+      ...shared,
+      // Test doubles for chrome's promise APIs are async functions that only
+      // return a value. That is the whole point of them, so the rule that
+      // wants an await inside every async function is noise here.
+      "require-await": "off",
+    },
   },
 ];
