@@ -13,6 +13,7 @@
 import { loadStrings, loadTheme } from "../shared/data.js";
 import { START_REPLACING, STOP_REPLACING } from "../shared/messages.js";
 import { setReplaceButtonState, setUploadPrompt, showImagePreview } from "./controls.js";
+import { findElements } from "./elements.js";
 import { readState, saveImage, saveReplacementState } from "./storage.js";
 import { applyStrings } from "./strings.js";
 import { applyTheme } from "./theme.js";
@@ -26,12 +27,14 @@ async function main() {
   applyStrings(document, strings);
   document.title = strings.documentTitle;
 
-  const replaceButton = document.getElementById("replaceButton");
-  const replaceTextElement = document.getElementById("replaceText");
-  const uploadImageElement = document.getElementById("uploadImage");
-  const uploadPromptElement = document.querySelector("#uploadLabel span");
-  const uploadedImageContainer = document.getElementById("uploadedImageContainer");
-  const uploadedImagePreview = document.getElementById("uploadedImagePreview");
+  const {
+    replaceButton,
+    replaceText: replaceTextElement,
+    uploadImage: uploadImageElement,
+    uploadPrompt: uploadPromptElement,
+    imageContainer: uploadedImageContainer,
+    imagePreview: uploadedImagePreview,
+  } = findElements(document);
 
   let isReplacing = false;
   let uploadedImageUrl = "";
