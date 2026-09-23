@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "validate": "node tools/validate-data.mjs",
+    "package": "node tools/package-extension.mjs",
     "extract": "node tools/extract-theme.mjs && node tools/extract-strings.mjs"
   },
   "devDependencies": {
