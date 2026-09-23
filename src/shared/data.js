@@ -11,6 +11,8 @@
  * context, which is exactly the lifetime of the data.
  */
 
+import { once } from "./once.js";
+
 /**
  * Runtime tuning values.
  *
@@ -40,8 +42,8 @@
  * @property {Record<string, string>} roles Which UI part uses which palette entry.
  */
 
-/** @type {Map<string, Promise<any>>} */
-const cache = new Map();
+/** @type {Map<string, () => Promise<any>>} */
+const loaders = new Map();
 
 /**
  * Reads one packaged JSON file.
@@ -55,20 +57,24 @@ const cache = new Map();
  * @returns {Promise<T>} The parsed file.
  */
 export function loadJson(path) {
-  const cached = cache.get(path);
-  if (cached) return cached;
+  let load = loaders.get(path);
 
-  const pending = fetch(chrome.runtime.getURL(path)).then((response) => {
-    if (!response.ok) {
-      // A packaged file that will not load means a broken build, not a
-      // runtime condition worth recovering from. Fail loudly.
-      throw new Error(`cannot read ${path}: ${response.status}`);
-    }
-    return response.json();
-  });
+  if (!load) {
+    // once() rather than caching the promise directly. Caching the promise
+    // means a rejected one is cached too, so a single failed read used to
+    // break that file for as long as the popup or the worker lived, with
+    // every later call handed the same old error and no retry ever attempted.
+    load = once(async () => {
+      const response = await fetch(chrome.runtime.getURL(path));
+      if (!response.ok) {
+        throw new Error(`cannot read ${path}: ${response.status}`);
+      }
+      return response.json();
+    });
+    loaders.set(path, load);
+  }
 
-  cache.set(path, pending);
-  return pending;
+  return load();
 }
 
 /** @type {() => Promise<Config>} Runtime tuning values. */
