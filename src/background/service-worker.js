@@ -17,25 +17,27 @@
 import { loadConfig, loadSelectors } from "../shared/data.js";
 import { buildSelector } from "../shared/selectors.js";
 import { replacePage } from "../content/replace-page.js";
+import { once } from "../shared/once.js";
 import { createReplacementLoop } from "./replacement-loop.js";
 import { routeMessage } from "./route-message.js";
 
 /**
- * Memoised so the data files are read once per worker lifetime, not per
- * message.
+ * The loop, built once per worker lifetime.
  *
- * @type {ReturnType<typeof createReplacementLoop> | null}
+ * once() rather than a plain `if (loop) return loop`, because that pattern
+ * caches the result and not the work. Two messages arriving before the first
+ * data read finished both found nothing cached and both built a loop. The
+ * Start built and started one, the Stop then overwrote the handle with a
+ * second loop and stopped that one instead, leaving a timer running every
+ * second that nothing held a reference to. Replacement carried on and the
+ * Stop button could not stop it.
  */
-let loop = null;
-
-async function getLoop() {
-  if (loop) return loop;
-
+const getLoop = once(async () => {
   const [config, selectors] = await Promise.all([loadConfig(), loadSelectors()]);
   const textSelector = buildSelector(selectors.text);
   const imageSelector = buildSelector(selectors.image);
 
-  loop = createReplacementLoop({
+  return createReplacementLoop({
     intervalMs: config.replacementIntervalMs,
     listTabs: () => chrome.tabs.query({}),
     applyToTab: (tabId, text, imageUrl) => {
@@ -54,8 +56,7 @@ async function getLoop() {
       });
     },
   });
-  return loop;
-}
+});
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
