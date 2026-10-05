@@ -7,11 +7,11 @@
 <p align="center">
   Replace the text and images on any webpage with your own.
   <br>
-  <a href="https://chromewebstore.google.com/detail/text-and-image-replacer-e/glamceigjodgbnfondkfloeoiikmlfno">Install from the Chrome Web Store</a>
+  <a href="https://chromewebstore.google.com/detail/text-image-replacer-exten/glamceigjodgbnfondkfloeoiikmlfno?hl=en">Install from the Chrome Web Store</a>
 </p>
 
 <p align="center">
-  <a href="https://chromewebstore.google.com/detail/text-and-image-replacer-e/glamceigjodgbnfondkfloeoiikmlfno"><img src="https://img.shields.io/badge/chrome%20web%20store-listed-007bff?style=flat-square" alt="Listed on the Chrome Web Store"></a>
+  <a href="https://chromewebstore.google.com/detail/text-image-replacer-exten/glamceigjodgbnfondkfloeoiikmlfno?hl=en"><img src="https://img.shields.io/badge/chrome%20web%20store-listed-007bff?style=flat-square" alt="Listed on the Chrome Web Store"></a>
   <img src="https://img.shields.io/badge/manifest-v3-007bff?style=flat-square" alt="Manifest V3">
   <img src="https://img.shields.io/badge/platform-chrome-007bff?style=flat-square" alt="Platform: Chrome">
 </p>
@@ -90,7 +90,7 @@ your web browsing experience today!
 
 ## Chrome Web Store Link
 
-https://chromewebstore.google.com/detail/text-and-image-replacer-e/glamceigjodgbnfondkfloeoiikmlfno
+https://chromewebstore.google.com/detail/text-image-replacer-exten/glamceigjodgbnfondkfloeoiikmlfno?hl=en
 
 ## How It Works
 
