@@ -1,9 +1,42 @@
-# Text and Image Replacer Extension
+<p align="center">
+  <img src="assets/brand/logo.svg" width="72" alt="Text and Image Replacer logo">
+</p>
+
+<h1 align="center">Text and Image Replacer Extension</h1>
+
+<p align="center">
+  Replace the text and images on any webpage with your own.
+  <br>
+  <a href="https://chromewebstore.google.com/detail/text-and-image-replacer-e/glamceigjodgbnfondkfloeoiikmlfno">Install from the Chrome Web Store</a>
+</p>
+
+<p align="center">
+  <a href="https://chromewebstore.google.com/detail/text-and-image-replacer-e/glamceigjodgbnfondkfloeoiikmlfno"><img src="https://img.shields.io/badge/chrome%20web%20store-listed-007bff?style=flat-square" alt="Listed on the Chrome Web Store"></a>
+  <img src="https://img.shields.io/badge/manifest-v3-007bff?style=flat-square" alt="Manifest V3">
+  <img src="https://img.shields.io/badge/platform-chrome-007bff?style=flat-square" alt="Platform: Chrome">
+</p>
 
 A Chrome extension that replaces the text and images on a webpage with your own.
 Type what you want everything to say, upload the picture you want everywhere,
 and press Start. Personalize a page, swap out content for a laugh, or mock up
 how your own words look on a live site.
+
+## Screenshots
+
+<p align="center">
+  <img width="100%" alt="Text and Image Replacer Extension" src="https://github.com/user-attachments/assets/46b3fd26-0dea-41d3-b0dc-8132be9b0e4e">
+</p>
+
+<table>
+  <tr>
+    <td width="50%">
+      <img width="100%" alt="Text and Image Replacer Extension" src="https://github.com/user-attachments/assets/ce4123cc-9099-451a-a45a-db5bc8431c84">
+    </td>
+    <td width="50%">
+      <!-- Spare slot. Drop another screenshot in here and it lines up with the one beside it. -->
+    </td>
+  </tr>
+</table>
 
 ## Features
 
@@ -57,12 +90,7 @@ your web browsing experience today!
 
 ## Chrome Web Store Link
 
-https://chromewebstore.google.com/detail/text-and-image-replacer-e/glamceigjodgbnfondkfloeoiikmlfno?authuser=2
-
-## Images
-
-<img width="1280" height="800" alt="5" src="https://github.com/user-attachments/assets/46b3fd26-0dea-41d3-b0dc-8132be9b0e4e" />
-<img width="1280" height="800" alt="6" src="https://github.com/user-attachments/assets/ce4123cc-9099-451a-a45a-db5bc8431c84" />
+https://chromewebstore.google.com/detail/text-and-image-replacer-e/glamceigjodgbnfondkfloeoiikmlfno
 
 ## How It Works
 
