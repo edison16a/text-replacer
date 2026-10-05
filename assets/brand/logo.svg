@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="72" height="72" role="img" aria-label="Text and Image Replacer">
+  <title>Text and Image Replacer</title>
+  <!--
+    The swap mark from the extension's own toolbar icon, redrawn in the
+    project's accent blue. Solid tile with a white glyph so it reads on both
+    the light and the dark GitHub themes.
+  -->
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#007bff"/>
+  <g stroke="#ffffff" stroke-width="5" stroke-linecap="round">
+    <line x1="17" y1="25" x2="39" y2="25"/>
+    <line x1="47" y1="39" x2="25" y2="39"/>
+  </g>
+  <path d="M38 17.5 L49 25 L38 32.5 Z" fill="#ffffff"/>
+  <path d="M26 31.5 L15 39 L26 46.5 Z" fill="#ffffff"/>
+</svg>
